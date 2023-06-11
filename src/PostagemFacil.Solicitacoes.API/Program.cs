@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using PostagemFacil.Solicitacoes.API.Business;
 using PostagemFacil.Solicitacoes.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<SolictacoesContext>(opt => opt.UseSqlServer(dbConnection));
+builder.Services.AddScoped<ISolicitacoesService,  SolicitacoesService>();
 
 var corsPolicy = new CorsPolicyBuilder().AllowAnyHeader().AllowAnyOrigin().Build();
 builder.Services.AddCors(opt => opt.AddDefaultPolicy(corsPolicy));
@@ -25,6 +27,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 
