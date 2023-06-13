@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PostagemFacil.Solicitacoes.API.Business;
 using PostagemFacil.Solicitacoes.API.Business.DTOs;
+using PostagemFacil.Solicitacoes.API.Data.Models;
 
 namespace PostagemFacil.Solicitacoes.API.Controllers
 {
@@ -14,6 +15,13 @@ namespace PostagemFacil.Solicitacoes.API.Controllers
         public SolicitacoesController(ISolicitacoesService service)
         {
             _service = service;
+        }
+
+        [HttpGet("{usuarioId}")]
+        public async Task<IActionResult> ObterSolicitacoesPorUsuario(int usuarioId)
+        {
+            IEnumerable<Solicitacao> solicitacoes = await _service.ObterSolicitacoesPorUsuario(usuarioId);
+            return Ok(solicitacoes);
         }
 
         [HttpPost]

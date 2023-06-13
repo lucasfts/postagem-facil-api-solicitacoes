@@ -1,4 +1,5 @@
-﻿using PostagemFacil.Solicitacoes.API.Business.DTOs;
+﻿using Microsoft.EntityFrameworkCore;
+using PostagemFacil.Solicitacoes.API.Business.DTOs;
 using PostagemFacil.Solicitacoes.API.Business.Enums;
 using PostagemFacil.Solicitacoes.API.Data;
 using PostagemFacil.Solicitacoes.API.Data.Models;
@@ -8,6 +9,7 @@ namespace PostagemFacil.Solicitacoes.API.Business
     public interface ISolicitacoesService
     {
         Task CriarSolicitacao(CriarSolicitacaoDTO dto);
+        Task<IEnumerable<Solicitacao>> ObterSolicitacoesPorUsuario(int usuarioId);
     }
 
     public class SolicitacoesService : ISolicitacoesService
@@ -40,6 +42,17 @@ namespace PostagemFacil.Solicitacoes.API.Business
 
             await _solictacoesContext.Solictacoes.AddAsync(model);
             await _solictacoesContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Solicitacao>> ObterSolicitacoesPorUsuario(int usuarioId)
+        {
+            return _solictacoesContext.Solictacoes
+                .Include(x => x.Transportadora)
+                .Include(x => x.TipoCaixa)
+                .Include(x => x.PesoLimite)
+                .Include(x => x.Status)
+                .Where(x => x.UsuarioId.Equals(usuarioId))
+                .ToList();
         }
     }
 }
