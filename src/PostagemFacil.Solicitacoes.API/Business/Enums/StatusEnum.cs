@@ -6,6 +6,7 @@
         AGUARDANDO_COLETA,
         COLETADO,
         EM_PREPARACAO,
-        POSTADO
+        POSTADO,
+        CANCELADO
     }
 }

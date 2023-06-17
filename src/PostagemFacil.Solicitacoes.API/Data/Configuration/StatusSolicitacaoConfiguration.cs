@@ -13,7 +13,8 @@ namespace PostagemFacil.Solicitacoes.API.Data.Configuration
                 new StatusSolicitacao() { Id = 2, Descricao = "Aguardando Coleta" },
                 new StatusSolicitacao() { Id = 3, Descricao = "Coletado" },
                 new StatusSolicitacao() { Id = 4, Descricao = "Preparação para postagem" },
-                new StatusSolicitacao() { Id = 5, Descricao = "Postado" }
+                new StatusSolicitacao() { Id = 5, Descricao = "Postado" },
+                new StatusSolicitacao() { Id = 6, Descricao = "Cancelado" }
             );
         }
     }
