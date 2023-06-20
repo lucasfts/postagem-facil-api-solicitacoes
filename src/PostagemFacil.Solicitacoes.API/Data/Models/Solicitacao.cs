@@ -3,7 +3,7 @@
     public class Solicitacao
     {
         public int Id { get; set; }
-        public int UsuarioId { get; set; }
+        public Guid UsuarioId { get; set; }
         public Transportadora Transportadora { get; set; }
         public PesoLimite PesoLimite { get; set; }
         public TipoCaixa TipoCaixa { get; set; }

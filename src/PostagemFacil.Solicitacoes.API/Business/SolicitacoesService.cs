@@ -9,7 +9,7 @@ namespace PostagemFacil.Solicitacoes.API.Business
     public interface ISolicitacoesService
     {
         Task CriarSolicitacao(CriarSolicitacaoDTO dto);
-        Task<IEnumerable<Solicitacao>> ObterSolicitacoesPorUsuario(int usuarioId);
+        Task<IEnumerable<Solicitacao>> ObterSolicitacoesPorUsuario(Guid usuarioId);
     }
 
     public class SolicitacoesService : ISolicitacoesService
@@ -44,7 +44,7 @@ namespace PostagemFacil.Solicitacoes.API.Business
             await _solictacoesContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Solicitacao>> ObterSolicitacoesPorUsuario(int usuarioId)
+        public async Task<IEnumerable<Solicitacao>> ObterSolicitacoesPorUsuario(Guid usuarioId)
         {
             return _solictacoesContext.Solictacoes
                 .Include(x => x.Transportadora)

@@ -18,7 +18,7 @@ namespace PostagemFacil.Solicitacoes.API.Controllers
         }
 
         [HttpGet("{usuarioId}")]
-        public async Task<IActionResult> ObterSolicitacoesPorUsuario(int usuarioId)
+        public async Task<IActionResult> ObterSolicitacoesPorUsuario(Guid usuarioId)
         {
             IEnumerable<Solicitacao> solicitacoes = await _service.ObterSolicitacoesPorUsuario(usuarioId);
             return Ok(solicitacoes);
