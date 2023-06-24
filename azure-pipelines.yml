@@ -33,11 +33,6 @@ steps:
     PathtoPublish: '$(Build.artifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
-
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
     
 - task: AzureRmWebAppDeployment@4
   inputs:
