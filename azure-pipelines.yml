@@ -30,7 +30,7 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(Build.artifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
@@ -45,4 +45,4 @@ steps:
     azureSubscription: 'Azure basic subscription(bfc785e5-3934-4759-9200-1bcfe3e2d212)'
     appType: 'webApp'
     WebAppName: 'postagem-facil-solicitacoes-api'
-    packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+    packageForLinux: '$(Build.artifactStagingDirectory)/**/*.zip'
