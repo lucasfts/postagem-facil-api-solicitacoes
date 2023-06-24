@@ -38,6 +38,7 @@ steps:
   inputs:
     ConnectionType: 'AzureRM'
     azureSubscription: 'Azure basic subscription(bfc785e5-3934-4759-9200-1bcfe3e2d212)'
-    appType: 'webApp'
+    appType: 'webAppLinux'
     WebAppName: 'postagem-facil-solicitacoes-api'
     packageForLinux: '$(Build.artifactStagingDirectory)/**/*.zip'
+    RuntimeStack: 'DOTNETCORE|6.0'
