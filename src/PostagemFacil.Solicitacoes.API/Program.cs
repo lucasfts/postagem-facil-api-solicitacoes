@@ -14,19 +14,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<SolictacoesContext>(opt => opt.UseSqlServer(dbConnection));
-builder.Services.AddScoped<ISolicitacoesService,  SolicitacoesService>();
+builder.Services.AddScoped<ISolicitacoesService, SolicitacoesService>();
 
 var corsPolicy = new CorsPolicyBuilder().AllowAnyHeader().AllowAnyOrigin().Build();
 builder.Services.AddCors(opt => opt.AddDefaultPolicy(corsPolicy));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger().UseSwaggerUI();
 
 app.UseCors();
 
