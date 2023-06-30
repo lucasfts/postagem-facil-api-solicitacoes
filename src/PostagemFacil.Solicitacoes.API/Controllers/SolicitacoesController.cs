@@ -17,10 +17,17 @@ namespace PostagemFacil.Solicitacoes.API.Controllers
             _service = service;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ObterSolicitacoes(int pagina = 1, int itensPorPagina = 10)
+        {
+            var solicitacoes = await _service.ObterSolicitacoes(pagina, itensPorPagina);
+            return Ok(solicitacoes);
+        }
+
         [HttpGet("{usuarioId}")]
         public async Task<IActionResult> ObterSolicitacoesPorUsuario(Guid usuarioId)
         {
-            IEnumerable<Solicitacao> solicitacoes = await _service.ObterSolicitacoesPorUsuario(usuarioId);
+            var solicitacoes = await _service.ObterSolicitacoesPorUsuario(usuarioId);
             return Ok(solicitacoes);
         }
 

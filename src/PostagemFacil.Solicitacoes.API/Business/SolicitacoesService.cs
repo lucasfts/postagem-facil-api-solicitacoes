@@ -9,6 +9,7 @@ namespace PostagemFacil.Solicitacoes.API.Business
     public interface ISolicitacoesService
     {
         Task CriarSolicitacao(CriarSolicitacaoDTO dto);
+        Task<IEnumerable<Solicitacao>> ObterSolicitacoes(int pagina, int itensPorPagina);
         Task<IEnumerable<Solicitacao>> ObterSolicitacoesPorUsuario(Guid usuarioId);
     }
 
@@ -44,15 +45,27 @@ namespace PostagemFacil.Solicitacoes.API.Business
             await _solictacoesContext.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<Solicitacao>> ObterSolicitacoes(int pagina, int itensPorPagina)
+        {
+            return await _solictacoesContext.Solictacoes
+                            .Skip((pagina - 1) * itensPorPagina)
+                            .Take(itensPorPagina)
+                            .Include(x => x.Transportadora)
+                            .Include(x => x.TipoCaixa)
+                            .Include(x => x.PesoLimite)
+                            .Include(x => x.Status)
+                            .ToListAsync();
+        }
+
         public async Task<IEnumerable<Solicitacao>> ObterSolicitacoesPorUsuario(Guid usuarioId)
         {
-            return _solictacoesContext.Solictacoes
-                .Include(x => x.Transportadora)
-                .Include(x => x.TipoCaixa)
-                .Include(x => x.PesoLimite)
-                .Include(x => x.Status)
-                .Where(x => x.UsuarioId.Equals(usuarioId))
-                .ToList();
+            return await _solictacoesContext.Solictacoes
+                            .Include(x => x.Transportadora)
+                            .Include(x => x.TipoCaixa)
+                            .Include(x => x.PesoLimite)
+                            .Include(x => x.Status)
+                            .Where(x => x.UsuarioId.Equals(usuarioId))
+                            .ToListAsync();
         }
     }
 }
