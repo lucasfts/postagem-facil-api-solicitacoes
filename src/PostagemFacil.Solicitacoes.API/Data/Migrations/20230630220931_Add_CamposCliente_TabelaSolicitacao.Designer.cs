@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PostagemFacil.Solicitacoes.API.Data;
 
@@ -11,9 +12,11 @@ using PostagemFacil.Solicitacoes.API.Data;
 namespace PostagemFacil.Solicitacoes.API.Data.Migrations
 {
     [DbContext(typeof(SolictacoesContext))]
-    partial class SolictacoesContextModelSnapshot : ModelSnapshot
+    [Migration("20230630220931_Add_CamposCliente_TabelaSolicitacao")]
+    partial class Add_CamposCliente_TabelaSolicitacao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

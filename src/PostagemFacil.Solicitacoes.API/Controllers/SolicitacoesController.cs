@@ -24,10 +24,10 @@ namespace PostagemFacil.Solicitacoes.API.Controllers
             return Ok(solicitacoes);
         }
 
-        [HttpGet("{usuarioId}")]
-        public async Task<IActionResult> ObterSolicitacoesPorUsuario(Guid usuarioId)
+        [HttpGet("{clienteId}")]
+        public async Task<IActionResult> ObterSolicitacoesPorUsuario(Guid clienteId)
         {
-            var solicitacoes = await _service.ObterSolicitacoesPorUsuario(usuarioId);
+            var solicitacoes = await _service.ObterSolicitacoesPorUsuario(clienteId);
             return Ok(solicitacoes);
         }
 

@@ -10,7 +10,7 @@ namespace PostagemFacil.Solicitacoes.API.Business
     {
         Task CriarSolicitacao(CriarSolicitacaoDTO dto);
         Task<IEnumerable<Solicitacao>> ObterSolicitacoes(int pagina, int itensPorPagina);
-        Task<IEnumerable<Solicitacao>> ObterSolicitacoesPorUsuario(Guid usuarioId);
+        Task<IEnumerable<Solicitacao>> ObterSolicitacoesPorUsuario(Guid clienteId);
     }
 
     public class SolicitacoesService : ISolicitacoesService
@@ -26,7 +26,9 @@ namespace PostagemFacil.Solicitacoes.API.Business
         {
             var model = new Solicitacao
             {
-                UsuarioId = dto.UsuarioId,
+                ClienteId = dto.ClienteId,
+                NomeCliente = dto.NomeCliente,
+                Endereco = dto.Endereco,
                 Transportadora = new Transportadora { Id = dto.TransportadoraId },
                 TipoCaixa = new TipoCaixa { Id = dto.TipoCaixaId },
                 PesoLimite = new PesoLimite { Id = dto.PesoLimiteId },
@@ -57,14 +59,14 @@ namespace PostagemFacil.Solicitacoes.API.Business
                             .ToListAsync();
         }
 
-        public async Task<IEnumerable<Solicitacao>> ObterSolicitacoesPorUsuario(Guid usuarioId)
+        public async Task<IEnumerable<Solicitacao>> ObterSolicitacoesPorUsuario(Guid clienteId)
         {
             return await _solictacoesContext.Solictacoes
                             .Include(x => x.Transportadora)
                             .Include(x => x.TipoCaixa)
                             .Include(x => x.PesoLimite)
                             .Include(x => x.Status)
-                            .Where(x => x.UsuarioId.Equals(usuarioId))
+                            .Where(x => x.ClienteId.Equals(clienteId))
                             .ToListAsync();
         }
     }
