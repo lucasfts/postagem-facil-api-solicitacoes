@@ -1,7 +1,7 @@
-# ASP.NET Core (.NET Framework)
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
 trigger:
 - main
@@ -13,32 +13,37 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  publishDirectory: 'publish-output' 
 
 steps:
 - task: NuGetToolInstaller@1
+  displayName: Instalar Nuget
 
 - task: NuGetCommand@2
+  displayName: Restaurar pacotes nuget
   inputs:
     restoreSolution: '$(solution)'
 
-- task: VSBuild@1
+- task: DotNetCoreCLI@2
+  displayName: Gerar arquivos de publicação
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'publish'
+    publishWebProjects: true
+    arguments: '--output "$(publishDirectory)"'
 
 - task: PublishBuildArtifacts@1
+  displayName: Upload dos arquivos de publicação
   inputs:
-    PathtoPublish: '$(Build.artifactStagingDirectory)'
+    PathtoPublish: '$(publishDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
-    
+
 - task: AzureRmWebAppDeployment@4
+  displayName: Publicar aplicação
   inputs:
     ConnectionType: 'AzureRM'
     azureSubscription: 'Azure basic subscription(bfc785e5-3934-4759-9200-1bcfe3e2d212)'
     appType: 'webAppLinux'
     WebAppName: 'postagem-facil-solicitacoes-api'
-    packageForLinux: '$(Build.artifactStagingDirectory)/**/*.zip'
-    RuntimeStack: 'DOTNETCORE|6.0'
+    packageForLinux: '$(publishDirectory)/**/*.zip'
+
