@@ -1,10 +1,11 @@
+using Azure.Messaging.ServiceBus;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using PostagemFacil.Solicitacoes.API.Business;
 using PostagemFacil.Solicitacoes.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-var dbConnection = builder.Configuration.GetConnectionString("Default");
+var dbConnection = builder.Configuration.GetConnectionString("SqlDatabase");
 
 // Add services to the container.
 
@@ -15,9 +16,18 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<SolictacoesContext>(opt => opt.UseSqlServer(dbConnection));
 builder.Services.AddScoped<ISolicitacoesService, SolicitacoesService>();
+builder.Services.AddHostedService<ColetaService>();
+builder.Services.AddSingleton(factory =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("ServiceBus");
+    var clientOptions = new ServiceBusClientOptions() { TransportType = ServiceBusTransportType.AmqpWebSockets };
+    var client = new ServiceBusClient(connectionString, clientOptions);
+    return client;
+});
 
 var corsPolicy = new CorsPolicyBuilder().AllowAnyHeader().AllowAnyOrigin().Build();
 builder.Services.AddCors(opt => opt.AddDefaultPolicy(corsPolicy));
+
 
 var app = builder.Build();
 

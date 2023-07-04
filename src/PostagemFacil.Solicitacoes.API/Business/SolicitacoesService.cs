@@ -9,6 +9,7 @@ namespace PostagemFacil.Solicitacoes.API.Business
     public interface ISolicitacoesService
     {
         Task CriarSolicitacao(CriarSolicitacaoDTO dto);
+        Task AtualizarStatus(int solicitacaoId, StatusEnum status);
         Task<IEnumerable<Solicitacao>> ObterSolicitacoes(int pagina, int itensPorPagina);
         Task<IEnumerable<Solicitacao>> ObterSolicitacoesPorUsuario(Guid clienteId);
     }
@@ -44,6 +45,14 @@ namespace PostagemFacil.Solicitacoes.API.Business
             _solictacoesContext.Attach(model.Status);
 
             await _solictacoesContext.Solictacoes.AddAsync(model);
+            await _solictacoesContext.SaveChangesAsync();
+        }
+
+        public async Task AtualizarStatus(int solicitacaoId, StatusEnum status)
+        {
+            var solicitacao = _solictacoesContext.Solictacoes.Find(solicitacaoId);
+            solicitacao.Status = new StatusSolicitacao { Id = (int)status };
+            _solictacoesContext.Attach(solicitacao.Status);
             await _solictacoesContext.SaveChangesAsync();
         }
 
